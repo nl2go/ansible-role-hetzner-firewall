@@ -1,0 +1,3 @@
+---
+- debug:
+    msg: "{{ hostvars[item].hetzner_firewall_template | default(None) }}"

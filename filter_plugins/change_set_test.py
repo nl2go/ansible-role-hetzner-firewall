@@ -3,7 +3,7 @@ import unittest
 from filter_plugins.change_set import *
 
 
-class ChangeSetFilterModuleTest(unittest.TestCase):
+class ChangeSetTest(unittest.TestCase):
 
     default_change_set = {
         'create': [],
