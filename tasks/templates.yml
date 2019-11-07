@@ -1,0 +1,52 @@
+---
+- name: Get list of existing firewall templates
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/template"
+    method: GET
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code:
+      - 200
+      - 404
+  register: hetzner_installimage_rescue
+
+- set_fact:
+    origin_templates: "{{ hetzner_installimage_rescue.json | map(attribute='firewall_template') | list }}"
+
+
+- debug:
+    msg: "{{ origin_templates }}"
+
+- set_fact:
+    change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_change_set(origin_templates) }}"
+
+
+- debug:
+    msg: "{{ change_set_templates }}"
+
+- name: Create missing templates
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/template"
+    method: POST
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 201
+    body: "{{ item }}"
+    body_format: form-urlencoded
+    changed_when: yes
+  with_items: "{{ change_set_templates['create'] }}"
+
+- name: Update existing templates
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
+    method: POST
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 200
+    body: "{{ item }}"
+    body_format: form-urlencoded
+    changed_when: yes
+  with_items: "{{ change_set_templates['update'] }}"
