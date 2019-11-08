@@ -64,10 +64,16 @@ def is_equal_intersection(local_obj, origin_obj):
         elif isinstance(value, bool):
             origin_value = str2bool(origin_value)
 
-        if origin_value != value:
+        if is_empty_dict_or_list(origin_value) and is_empty_dict_or_list(value):
+            continue
+        elif origin_value != value:
             return False
 
     return True
+
+
+def is_empty_dict_or_list(value):
+    return isinstance(value, dict) or isinstance(value, list)
 
 
 def remove_state(obj):
