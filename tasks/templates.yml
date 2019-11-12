@@ -33,7 +33,7 @@
 
 - name: Compile change set using local and origin firewall templates
   set_fact:
-    change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_template_defaults | list | hetzner_firewall_change_set(origin_templates) }}"
+    change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_template_defaults | hetzner_firewall_change_set(origin_templates) }}"
 
 - name: Create firewall templates
   local_action:
