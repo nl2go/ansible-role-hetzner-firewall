@@ -120,3 +120,15 @@ class ChangeSetTest(unittest.TestCase):
         actual_change_set = change_set(local, origin)
 
         self.assertEqual(actual_change_set, expected_change_set)
+
+    def test_set_action_noop_if_origin_nested_object_has_additional_properties(self):
+        local = [{'foo': 'bar', 'name': 'obj2', 'items': [{'foo': 'bar'}]}]
+        origin = [{'foo': 'bar', 'name': 'obj2', 'items': [{'foo': 'bar', 'foz':'baz'}]}]
+        expected_change_set = copy.deepcopy(self.default_change_set)
+        expected_change_set.update({
+            'noop': [{'foo': 'bar', 'name': 'obj2', 'items': [{'foo': 'bar'}]}]
+        })
+
+        actual_change_set = change_set(local, origin)
+
+        self.assertEqual(actual_change_set, expected_change_set)

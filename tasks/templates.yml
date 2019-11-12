@@ -28,13 +28,15 @@
   register: get_template_response
   with_items: "{{ origin_template_references }}"
 
-- set_fact:
+- name: Determine origin templates
+  set_fact:
     origin_templates: "{{ get_template_response['results'] | map(attribute='json') | map(attribute='firewall_template') | list }}"
 
 - debug:
     msg: "{{ origin_templates }}"
 
-- set_fact:
+- name: Compile change set
+  set_fact:
     change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_template_defaults | hetzner_firewall_change_set(origin_templates) }}"
 
 - debug:
@@ -45,11 +47,13 @@
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template"
     method: POST
+    headers:
+      Content-Type: application/x-www-form-urlencoded
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 201
-    body: "{{ item }}"
-    body_format: form-urlencoded
+    body: "{{ item | hetzner_firewall_form_urlencode }}"
+    body_format: raw
     changed_when: yes
   with_items: "{{ change_set_templates['create'] }}"
 
@@ -58,11 +62,13 @@
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
     method: POST
+    headers:
+      Content-Type: application/x-www-form-urlencoded
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 200
-    body: "{{ item }}"
-    body_format: form-urlencoded
+    body: "{{ item | hetzner_firewall_form_urlencode }}"
+    body_format: raw
     changed_when: yes
   with_items: "{{ change_set_templates['update'] }}"
 

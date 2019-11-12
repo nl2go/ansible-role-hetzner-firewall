@@ -40,7 +40,7 @@ def get_action(local_obj, origin_obj, state):
             return ACTION_CREATE
         else:
             return ACTION_NOOP
-    elif is_equal_intersection(local_obj, origin_obj):
+    elif is_equal_obj(local_obj, origin_obj):
         if state == STATE_PRESENT:
             return ACTION_NOOP
         else:
@@ -56,24 +56,66 @@ def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
 
-def is_equal_intersection(local_obj, origin_obj):
-    for key, value in local_obj.items():
-        origin_value = origin_obj.get(key)
-        if isinstance(origin_value, bool):
-            value = str2bool(value)
-        elif isinstance(value, bool):
-            origin_value = str2bool(origin_value)
+def is_equal_obj(local_obj, origin_obj):
+    if is_all_empty(local_obj, origin_obj):
+        return True
 
-        if is_empty_dict_or_list(origin_value) and is_empty_dict_or_list(value):
-            continue
-        elif origin_value != value:
-            return False
+    if is_any_bool(local_obj, origin_obj):
+        return is_equal_bool(local_obj, origin_obj)
+
+    if is_all_dict(local_obj, origin_obj):
+        for key, local_value in local_obj.items():
+            origin_value = origin_obj.get(key)
+            if not is_equal_obj(local_value, origin_value):
+                return False
+    elif is_list(local_obj) and is_list(origin_obj):
+        for i in range(len(local_obj)):
+            local_value = local_obj[i]
+            origin_value = origin_obj[i]
+            if not is_equal_obj(local_value, origin_value):
+                return False
+    elif local_obj != origin_obj:
+        return False
 
     return True
 
 
-def is_empty_dict_or_list(value):
-    return isinstance(value, dict) or isinstance(value, list)
+def is_equal_bool(left, right):
+    if not isinstance(left, bool):
+        left = str2bool(left)
+    if not isinstance(right, bool):
+        right = str2bool(right)
+    return left and right
+
+
+def is_any_bool(left, right):
+    return isinstance(left, bool) or isinstance(right, bool)
+
+
+def is_all_empty(left, right):
+    return is_empty(left) and is_empty(right)
+
+
+def is_all_dict(left, right):
+    return is_dict(left) and is_dict(right)
+
+
+def is_all_list(left, right):
+    return is_list(left) and is_list(right)
+
+
+def is_dict(obj):
+    return isinstance(obj, dict)
+
+
+def is_list(obj):
+    return isinstance(obj, list)
+
+
+def is_empty(value):
+    if value:
+        return False
+    return True
 
 
 def remove_state(obj):

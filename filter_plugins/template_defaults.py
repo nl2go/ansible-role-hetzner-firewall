@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import json
-
 TEMPLATE_DEFAULTS = {
     'whitelist_hos': False,
     'is_default': False
@@ -9,13 +7,12 @@ TEMPLATE_DEFAULTS = {
 
 RULE_DEFAULTS = {
     'ip_version': 'ipv4',
-    'dst_ip': None,
-    'dst_port': None,
-    'packet_length': None,
-    'protocol': None,
-    'src_ip': None,
-    'src_port': None,
-    'tcp_flags': None
+    # 'dst_ip': None,
+    # 'dst_port': None,
+    # 'protocol': None,
+    # 'src_ip': None,
+    # 'src_port': None,
+    # 'tcp_flags': None
 }
 
 

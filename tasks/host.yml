@@ -1,3 +1,47 @@
 ---
-- debug:
-    msg: "{{ hostvars[item].hetzner_firewall_template | default(None) }}"
+- set_fact:
+    template_name: "{{ hostvars[item].hetzner_firewall_template | default(None) }}"
+    host_ip: "{{ hostvars[item].ansible_host }}"
+
+- set_fact:
+    template: "{{ hetzner_firewall_templates | selectattr('name', 'equalto', template_name) | list | hetzner_firewall_template_defaults | first }}"
+
+- name: "Get current host firewall for {{ item }}"
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+    method: GET
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 200
+  register: get_host_firewall_response
+
+- name: Compile change set
+  set_fact:
+    change_set_firewall: "{{ [get_host_firewall_response.json.firewall] | hetzner_firewall_change_set([template]) }}"
+
+- name: "Update host firewall for {{ item }}"
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+    method: POST
+    headers:
+      Content-Type: application/x-www-form-urlencoded
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 202
+    body: "{{ template | hetzner_firewall_form_urlencode }}"
+    body_format: raw
+    changed_when: yes
+  when: template
+
+- name: "Delete host firewall for {{ item }}"
+  local_action:
+    module: uri
+    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+    method: DELETE
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 200
+    changed_when: yes
+  when: not template
