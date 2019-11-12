@@ -17,15 +17,10 @@ class TemplateDefaultsTest(unittest.TestCase):
         templates = [{'name': 'foo', 'rules': {'input': [{'name': 'bar'}]}}]
         expected_templates = [{'is_default': False,
                                'name': 'foo',
-                               'rules': {'input': [{'dst_ip': None,
-                                                    'dst_port': None,
+                               'rules': {'input': [{
                                                     'ip_version': 'ipv4',
-                                                    'name': 'bar',
-                                                    'packet_length': None,
-                                                    'protocol': None,
-                                                    'src_ip': None,
-                                                    'src_port': None,
-                                                    'tcp_flags': None}]},
+                                                    'name': 'bar'
+                                                    }]},
                                'whitelist_hos': False}]
 
         actual_templates = template_defaults(templates)
