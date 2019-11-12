@@ -163,7 +163,6 @@ def change_set(local, origin, attr='name'):
     raise TypeError('Can not build change set for given objects: ' + str(local) + ", " + str(origin))
 
 
-
 def change_set_item(result_dict, local_obj, origin_obj):
     obj = copy.deepcopy(local_obj)
     state = remove_state(obj)
