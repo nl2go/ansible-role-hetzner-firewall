@@ -1,5 +1,6 @@
 ---
-- include_tasks: host.yml
+- name: "Check firewall configuration for all hosts"
+  include_tasks: host.yml
   with_items: "{{ groups['all'] }}"
   loop_control:
     loop_var: hostname

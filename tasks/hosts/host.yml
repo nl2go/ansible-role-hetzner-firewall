@@ -1,0 +1,7 @@
+---
+- name: "Get firewall template for {{ hostname }}"
+  include_tasks: get.yml
+- name: "Update firewall configuration for {{ hostname }}"
+  include_tasks: update.yml
+  when: firewall_template_name | length > 0
+

@@ -1,3 +1,3 @@
 ---
-- include_tasks: templates.yml
-- include_tasks: hosts.yml
+- include_tasks: templates/main.yml
+- include_tasks: hosts/main.yml
