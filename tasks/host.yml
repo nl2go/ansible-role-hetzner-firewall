@@ -1,10 +1,16 @@
 ---
-- set_fact:
-    template_name: "{{ hostvars[item].hetzner_firewall_template | default(None) }}"
-    host_ip: "{{ hostvars[item].ansible_host }}"
+- name: Map firewall template name and host IP
+  set_fact:
+    firewall_template_name: "{{ ( hostvars[hostname].hetzner_firewall_template | default({}) ).name | default(None) }}"
+    host_ip: "{{ hostvars[hostname].ansible_host }}"
 
-- set_fact:
-    template: "{{ hetzner_firewall_templates | selectattr('name', 'equalto', template_name) | list | hetzner_firewall_template_defaults | first }}"
+- debug:
+    msg: "{{ firewall_template_name }}"
+
+- name: Map firewall template with rules using previously defined template name
+  set_fact:
+    firewall_template: "{{ hetzner_firewall_templates | selectattr('name', 'equalto', firewall_template_name) | hetzner_firewall_template_defaults | first }}"
+  when: firewall_template_name | length > 0
 
 - name: "Get current host firewall for {{ item }}"
   local_action:
@@ -15,10 +21,20 @@
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 200
   register: get_host_firewall_response
+  when: firewall_template_name | length > 0 and firewall_template is defined
 
-- name: Compile change set
+- name: Map origin firewall config
   set_fact:
-    change_set_firewall: "{{ [get_host_firewall_response.json.firewall] | hetzner_firewall_change_set([template]) }}"
+    origin_firewall: "{{ get_host_firewall_response.json.firewall | combine({ 'name': firewall_template_name }) }}"
+  when: firewall_template_name | length > 0 and firewall_template is defined
+
+- name: Compile change set based on firewall rules
+  set_fact:
+    change_set_firewall: "{{ firewall_template | hetzner_firewall_change_set(origin_firewall) }}"
+  when: firewall_template_name | length > 0 and firewall_template is defined
+
+- debug:
+    msg: "{{ change_set_firewall }}"
 
 - name: "Update host firewall for {{ item }}"
   local_action:
@@ -30,10 +46,11 @@
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 202
-    body: "{{ template | hetzner_firewall_form_urlencode }}"
+    body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
     changed_when: yes
-  when: template
+  with_items: "{{ change_set_firewall['create'] + change_set_firewall['update'] }}"
+  when: firewall_template_name | length > 0 and firewall_template is defined
 
 - name: "Delete host firewall for {{ item }}"
   local_action:
@@ -44,4 +61,5 @@
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 200
     changed_when: yes
-  when: not template
+  with_items: "{{ change_set_firewall['delete'] }}"
+  when: firewall_template_name | length > 0 and firewall_template is defined

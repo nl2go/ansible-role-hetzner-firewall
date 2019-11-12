@@ -133,34 +133,50 @@ def update_obj(obj, origin_obj):
 
 
 def change_set(local, origin, attr='name'):
-    if not local:
-        return []
-
-    local_dict = array_to_dict(local, attr)
-
-    if not isinstance(origin, list):
-        origin_dict = {}
-    else:
-        origin_dict = array_to_dict(origin, attr)
-
-    change_set_dict = {
+    result_dict = {
         ACTION_CREATE: [],
         ACTION_UPDATE: [],
         ACTION_DELETE: [],
         ACTION_NOOP: []
     }
 
+    if not local:
+        return result_dict
+
+    if is_dict(local):
+        if not isinstance(origin, dict):
+            origin = {}
+        change_set_item(result_dict, local, origin)
+        return result_dict
+
+    if is_list(local):
+        local_dict = array_to_dict(local, attr)
+
+        if not isinstance(origin, list):
+            origin_dict = {}
+        else:
+            origin_dict = array_to_dict(origin, attr)
+
+        change_set_items(result_dict, local_dict, origin_dict)
+        return result_dict
+
+    raise TypeError('Can not build change set for given objects: ' + str(local) + ", " + str(origin))
+
+
+
+def change_set_item(result_dict, local_obj, origin_obj):
+    obj = copy.deepcopy(local_obj)
+    state = remove_state(obj)
+    action = get_action(obj, origin_obj, state)
+
+    obj = update_obj(obj, origin_obj)
+    result_dict[action].append(obj)
+
+
+def change_set_items(result_dict, local_dict, origin_dict):
     for obj_key, local_obj in local_dict.items():
         origin_obj = origin_dict.get(obj_key)
-        obj = copy.deepcopy(local_obj)
-        state = remove_state(obj)
-        action = get_action(obj, origin_obj, state)
-
-        obj = update_obj(obj, origin_obj)
-
-        change_set_dict[action].append(obj)
-
-    return change_set_dict
+        change_set_item(result_dict, local_obj, origin_obj)
 
 
 class FilterModule(object):

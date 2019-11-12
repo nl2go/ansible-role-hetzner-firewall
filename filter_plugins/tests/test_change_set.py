@@ -144,3 +144,15 @@ class ChangeSetTest(unittest.TestCase):
         actual_change_set = change_set(local, origin)
 
         self.assertEqual(actual_change_set, expected_change_set)
+
+    def test_set_action_noop_if_local_and_origin_dict(self):
+        local = {'foo': 'bar', 'name': 'obj2'}
+        origin = {'foo': 'bar', 'name': 'obj2'}
+        expected_change_set = copy.deepcopy(self.default_change_set)
+        expected_change_set.update({
+            'noop': [{'foo': 'bar', 'name': 'obj2'}]
+        })
+
+        actual_change_set = change_set(local, origin)
+
+        self.assertEqual(actual_change_set, expected_change_set)
