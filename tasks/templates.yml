@@ -1,5 +1,5 @@
 ---
-- name: Get list of existing firewall templates
+- name: Get list of origin firewall templates
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template"
@@ -11,13 +11,12 @@
       - 404
   register: get_templates_response
 
-- set_fact:
+- name: Map origin firewall templates
+  set_fact:
     origin_template_references: "{{ get_templates_response.json |  selectattr('firewall_template', 'defined') | map(attribute='firewall_template') | list }}"
 
-- debug:
-    msg: "{{ origin_template_references }}"
-
-- local_action:
+- name: Get rules for origin firewall templates
+  local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
     method: GET
@@ -28,21 +27,15 @@
   register: get_template_response
   with_items: "{{ origin_template_references }}"
 
-- name: Determine origin templates
+- name: Map origin firewall templates with rules
   set_fact:
     origin_templates: "{{ get_template_response['results'] | map(attribute='json') | map(attribute='firewall_template') | list }}"
 
-- debug:
-    msg: "{{ origin_templates }}"
-
-- name: Compile change set
+- name: Compile change set using local and origin firewall templates
   set_fact:
-    change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_template_defaults | hetzner_firewall_change_set(origin_templates) }}"
+    change_set_templates: "{{ hetzner_firewall_templates | hetzner_firewall_template_defaults | list | hetzner_firewall_change_set(origin_templates) }}"
 
-- debug:
-    msg: "{{ change_set_templates }}"
-
-- name: Create templates
+- name: Create firewall templates
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template"
@@ -57,7 +50,7 @@
     changed_when: yes
   with_items: "{{ change_set_templates['create'] }}"
 
-- name: Update templates
+- name: Update firewall templates
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
@@ -72,7 +65,7 @@
     changed_when: yes
   with_items: "{{ change_set_templates['update'] }}"
 
-- name: Delete templates
+- name: Delete firewall templates
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
