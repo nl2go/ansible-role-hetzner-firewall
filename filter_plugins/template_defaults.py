@@ -6,13 +6,7 @@ TEMPLATE_DEFAULTS = {
 }
 
 RULE_DEFAULTS = {
-    'ip_version': 'ipv4',
-    # 'dst_ip': None,
-    # 'dst_port': None,
-    # 'protocol': None,
-    # 'src_ip': None,
-    # 'src_port': None,
-    # 'tcp_flags': None
+    'ip_version': 'ipv4'
 }
 
 
