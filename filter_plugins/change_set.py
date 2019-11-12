@@ -85,7 +85,7 @@ def is_equal_bool(left, right):
         left = str2bool(left)
     if not isinstance(right, bool):
         right = str2bool(right)
-    return left and right
+    return left is right
 
 
 def is_any_bool(left, right):

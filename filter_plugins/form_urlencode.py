@@ -48,7 +48,7 @@ def serialize_value(obj):
     elif obj is None:
         return 'null'
     else:
-        return quote(obj);
+        return quote(str(obj));
       #  return urllib.parse.quote(str(obj))
 
 
