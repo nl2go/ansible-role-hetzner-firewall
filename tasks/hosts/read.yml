@@ -1,8 +1,12 @@
 ---
-- name: Map firewall template name and host IP
+- name: Map firewall and host IP
   set_fact:
-    firewall_template_name: "{{ ( hostvars[hostname].hetzner_firewall_template | default({}) ).name | default(None) }}"
+    firewall_host: "{{ hostvars[hostname].hetzner_firewall_host | default({}) }}"
     host_ip: "{{ hostvars[hostname].ansible_host }}"
+
+- name: Map firewall template name
+  set_fact:
+    firewall_template_name: "{{ firewall_host.name | default(None) }}"
 
 - name: Map firewall template with rules using previously defined template name
   set_fact:
