@@ -15,7 +15,7 @@
 
 - name: Compile change set based on firewall rules
   set_fact:
-    change_set_firewall: "{{ firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host) | hetzner_firewall_change_set(origin_firewall, hetzner_firewall_host_default) }}"
+    change_set_firewall: "{{ firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host) | hetzner_firewall_change_set(origin_firewall, hetzner_firewall_host_origin_default) }}"
 
 - name: "Update host firewall"
   local_action:
