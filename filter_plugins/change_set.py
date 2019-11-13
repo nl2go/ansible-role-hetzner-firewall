@@ -34,7 +34,7 @@ def dict_to_array(obj_dict):
     return obj_array
 
 
-def get_action(local_obj, origin_obj, state):
+def get_action(local_obj, origin_obj, state, origin_default):
     if not origin_obj:
         if state == STATE_PRESENT:
             return ACTION_CREATE
@@ -42,6 +42,8 @@ def get_action(local_obj, origin_obj, state):
             return ACTION_NOOP
     elif is_equal_obj(local_obj, origin_obj):
         if state == STATE_PRESENT:
+            return ACTION_NOOP
+        elif is_equal_obj(origin_default, origin_obj):
             return ACTION_NOOP
         else:
             return ACTION_DELETE
@@ -132,7 +134,7 @@ def update_obj(obj, origin_obj):
     return updated_obj
 
 
-def change_set(local, origin, attr='name'):
+def change_set(local, origin, origin_default=None, attr='name'):
     result_dict = {
         ACTION_CREATE: [],
         ACTION_UPDATE: [],
@@ -146,7 +148,7 @@ def change_set(local, origin, attr='name'):
     if is_dict(local):
         if not isinstance(origin, dict):
             origin = {}
-        change_set_item(result_dict, local, origin)
+        change_set_item(result_dict, local, origin, origin_default)
         return result_dict
 
     if is_list(local):
@@ -157,25 +159,25 @@ def change_set(local, origin, attr='name'):
         else:
             origin_dict = array_to_dict(origin, attr)
 
-        change_set_items(result_dict, local_dict, origin_dict)
+        change_set_items(result_dict, local_dict, origin_dict, origin_default)
         return result_dict
 
     raise TypeError('Can not build change set for given objects: ' + str(local) + ", " + str(origin))
 
 
-def change_set_item(result_dict, local_obj, origin_obj):
+def change_set_item(result_dict, local_obj, origin_obj, origin_default):
     obj = copy.deepcopy(local_obj)
     state = remove_state(obj)
-    action = get_action(obj, origin_obj, state)
+    action = get_action(obj, origin_obj, state, origin_default)
 
     obj = update_obj(obj, origin_obj)
     result_dict[action].append(obj)
 
 
-def change_set_items(result_dict, local_dict, origin_dict):
+def change_set_items(result_dict, local_dict, origin_dict, origin_default):
     for obj_key, local_obj in local_dict.items():
         origin_obj = origin_dict.get(obj_key)
-        change_set_item(result_dict, local_obj, origin_obj)
+        change_set_item(result_dict, local_obj, origin_obj, origin_default)
 
 
 class FilterModule(object):

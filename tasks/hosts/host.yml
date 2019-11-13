@@ -3,5 +3,4 @@
   include_tasks: read.yml
 - name: "Update firewall configuration for {{ hostname }}"
   include_tasks: update.yml
-  when: firewall_template_name | length > 0
-
+  when: hostvars[hostname].hetzner_firewall_host is defined

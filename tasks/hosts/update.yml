@@ -1,5 +1,5 @@
 ---
-- name: "Get current host firewall for {{ item }}"
+- name: "Get current host firewall"
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
@@ -15,9 +15,9 @@
 
 - name: Compile change set based on firewall rules
   set_fact:
-    change_set_firewall: "{{ firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host) | hetzner_firewall_change_set(origin_firewall) }}"
+    change_set_firewall: "{{ firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host) | hetzner_firewall_change_set(origin_firewall, hetzner_firewall_host_default) }}"
 
-- name: "Update host firewall for {{ item }}"
+- name: "Update host firewall"
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
@@ -32,7 +32,7 @@
     changed_when: yes
   with_items: "{{ change_set_firewall['create'] + change_set_firewall['update'] }}"
 
-- name: "Delete host firewall for {{ item }}"
+- name: "Delete host firewall"
   local_action:
     module: uri
     url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
