@@ -2,7 +2,7 @@
 - name: Map firewall and host IP
   set_fact:
     firewall_host: "{{ hostvars[hostname].hetzner_firewall_host | default({}) }}"
-    host_ip: "{{ hostvars[hostname].ansible_host }}"
+    host_ip: "{{ hostvars[hostname].ansible_host | default(ansible_default_ipv4) }}"
 
 - name: Map firewall template name
   set_fact:
@@ -10,4 +10,8 @@
 
 - name: Map firewall template with rules using previously defined template name
   set_fact:
-    firewall_template: "{{ hetzner_firewall_templates | selectattr('name', 'equalto', firewall_template_name) | hetzner_firewall_template_defaults | first | default({}) }}"
+    firewall_template: >-
+      "{{
+        hetzner_firewall_templates | selectattr('name', 'equalto', firewall_template_name)
+        | hetzner_firewall_template_defaults | first | default({})
+      }}"

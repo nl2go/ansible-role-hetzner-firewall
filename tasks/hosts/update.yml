@@ -1,12 +1,12 @@
 ---
 - name: "Get current host firewall"
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/{{ host_ip }}"
     method: GET
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 200
+    force_basic_auth: yes
   register: get_host_firewall_response
 
 - name: Map origin firewall config
@@ -15,12 +15,15 @@
 
 - name: Compile change set based on firewall rules
   set_fact:
-    change_set_firewall: "{{ firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host) | hetzner_firewall_change_set(origin_firewall, hetzner_firewall_host_origin_default) }}"
+    change_set_firewall: >-
+      "{{
+        firewall_template | hetzner_firewall_omit(['is_default']) | combine(firewall_host)
+        | hetzner_firewall_change_set(origin_firewall, hetzner_firewall_host_origin_default)
+      }}"
 
 - name: "Update host firewall"
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/{{ host_ip }}"
     method: POST
     headers:
       Content-Type: application/x-www-form-urlencoded
@@ -30,12 +33,12 @@
     body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
     changed_when: yes
+    force_basic_auth: yes
   with_items: "{{ change_set_firewall['create'] + change_set_firewall['update'] }}"
 
 - name: "Delete host firewall"
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/{{ host_ip }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/{{ host_ip }}"
     method: DELETE
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
@@ -43,4 +46,5 @@
       - 202
       - 200
     changed_when: yes
+    force_basic_auth: yes
   with_items: "{{ change_set_firewall['delete'] }}"

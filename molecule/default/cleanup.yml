@@ -1,0 +1,9 @@
+---
+- name: Remove Hetzner Robot Mock API
+  hosts: localhost
+  tasks:
+    - name: Delete Hetzner Robot Mock API container
+      shell: docker rm -f hetzner-robot 2> /dev/null
+      register: deletion_result
+      changed_when: deletion_result.rc == 0
+      failed_when: deletion_result.rc not in [0,1]

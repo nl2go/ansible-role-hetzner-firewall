@@ -1,0 +1,6 @@
+---
+- name: Prepare Hetzner Robot Mock API
+  hosts: localhost
+  tasks:
+    - name: Run Hetzner Robot Mock API Container
+      shell: docker run -d --rm --network molecule_default --name hetzner-robot nl2go/hetzner-robot-api-mock:1.1.0

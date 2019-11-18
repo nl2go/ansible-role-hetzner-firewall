@@ -1,8 +1,7 @@
 ---
 - name: Create firewall templates
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/template"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template"
     method: POST
     headers:
       Content-Type: application/x-www-form-urlencoded
@@ -12,12 +11,12 @@
     body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
     changed_when: yes
+    force_basic_auth: yes
   with_items: "{{ change_set_templates['create'] }}"
 
 - name: Update firewall templates
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template/{{ item['id'] }}"
     method: POST
     headers:
       Content-Type: application/x-www-form-urlencoded
@@ -27,15 +26,16 @@
     body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
     changed_when: yes
+    force_basic_auth: yes
   with_items: "{{ change_set_templates['update'] }}"
 
 - name: Delete firewall templates
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template/{{ item['id'] }}"
     method: DELETE
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code: 200
     changed_when: yes
+    force_basic_auth: yes
   with_items: "{{ change_set_templates['delete'] }}"

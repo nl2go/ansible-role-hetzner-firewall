@@ -1,0 +1,21 @@
+---
+hetzner_firewall_webservice_base_url: https://robot-ws.your-server.de
+hetzner_firewall_webservice_username: robot
+hetzner_firewall_webservice_password: secret
+hetzner_firewall_host_origin_default:
+  rules:
+    input:
+      - action: accept
+        ip_version: ipv4
+        name: Allow all
+  status: active
+  whitelist_hos: true
+hetzner_firewall_templates:
+  - name: Allow all
+    whitelist_hos: true
+    is_default: false
+    rules:
+      input:
+        - action: accept
+          ip_version: ipv4
+          name: Allow all

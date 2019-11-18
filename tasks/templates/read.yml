@@ -1,14 +1,14 @@
 ---
 - name: Get list of origin firewall templates
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/template"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template"
     method: GET
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code:
       - 200
       - 404
+    force_basic_auth: yes
   register: get_templates_response
 
 - name: Map origin firewall templates
@@ -16,14 +16,14 @@
     origin_template_references: "{{ get_templates_response.json |  selectattr('firewall_template', 'defined') | map(attribute='firewall_template') | list }}"
 
 - name: Get rules for origin firewall templates
-  local_action:
-    module: uri
-    url: "https://robot-ws.your-server.de/firewall/template/{{ item['id'] }}"
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template/{{ item['id'] }}"
     method: GET
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
     status_code:
       - 200
+    force_basic_auth: yes
   register: get_template_response
   with_items: "{{ origin_template_references }}"
 
