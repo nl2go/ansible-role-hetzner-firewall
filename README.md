@@ -1,3 +1,5 @@
+[![Travis (.org) branch](https://img.shields.io/travis/nl2go/ansible-role-hetzner-firewall/master)](https://travis-ci.org/nl2go/ansible-role-hetzner-firewall)
+
 # Ansible Role: Hetzner Firewall
 
 An Ansible Role that manages [Hetzner Robot Firewall](https://wiki.hetzner.de/index.php/Robot_Firewall/en).
