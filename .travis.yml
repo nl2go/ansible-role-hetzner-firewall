@@ -8,11 +8,10 @@ env:
 
 before_script:
   - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.0/docker-compose.yml
-  - cd .. && ls
   - docker-compose up -d
 
 script:
-  - docker-compose exec molecule molecule test --all
+  - docker-compose exec cd ansible-role-hetzner-firewall && molecule molecule test --all
 
 after_script:
   - docker-compose down
