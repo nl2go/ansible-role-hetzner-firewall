@@ -4,4 +4,4 @@
   vars:
     hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
   roles:
-    - role: hetzner-firewall
+    - role: ansible-role-hetzner-firewall
