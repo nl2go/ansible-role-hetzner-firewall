@@ -1,4 +1,4 @@
-# Hetzner Firewall
+# Ansible Role: Hetzner Firewall
 
 An Ansible Role that manages [Hetzner Robot Firewall](https://wiki.hetzner.de/index.php/Robot_Firewall/en).
 
