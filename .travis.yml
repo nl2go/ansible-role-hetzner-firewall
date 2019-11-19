@@ -8,7 +8,7 @@ env:
     - ROLE_NAME: hetzner_firewall
 
 before_script:
-  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.1/docker-compose.yml
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.2/docker-compose.yml
   - docker-compose up -d
 
 script:
