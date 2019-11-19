@@ -1,0 +1,21 @@
+---
+language: python
+services: docker
+
+env:
+  global:
+    - ROLE_NAME: hetzner_firewall
+
+before_script:
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.0/docker-compose.yml
+  - cd .. & ls
+  - docker-compose up -d
+
+script:
+  - docker-compose exec molecule molecule test --all
+
+after_script:
+  - docker-compose down
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
