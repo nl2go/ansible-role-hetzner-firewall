@@ -14,7 +14,6 @@ class DefaultTest(unittest.TestCase):
     def test_firewall_template_created(self):
         response = requests.get(self.hetzner_robot_base_url +
                                 "/firewall/template", auth=self.auth)
-        self.maxDiff = None
         self.assertEqual(len(response.json()), 2)
         self.assertEqual(response.json()[1], {
             'firewall_template': {
