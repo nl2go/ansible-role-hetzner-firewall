@@ -11,16 +11,17 @@ class DefaultTest(unittest.TestCase):
     )
     auth = HTTPBasicAuth('robot', 'secret')
 
-    def test_firewall_templates_unchanged(self):
+    def test_firewall_template_created(self):
         response = requests.get(self.hetzner_robot_base_url +
                                 "/firewall/template", auth=self.auth)
-        self.assertEqual(len(response.json()), 1)
-        self.assertEqual(response.json()[0], {
+        self.maxDiff = None
+        self.assertEqual(len(response.json()), 2)
+        self.assertEqual(response.json()[1], {
             'firewall_template': {
-                'id': 1,
-                'name': 'Existing Template',
-                'whitelist_hos': True,
-                'is_default': False,
+                'id': 2,
+                'name': 'Created Template',
+                'whitelist_hos': 'true',
+                'is_default': 'false',
                 'rules': {
                     'input': [{
                         'action': 'accept',
