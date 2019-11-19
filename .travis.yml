@@ -4,14 +4,14 @@ services: docker
 
 env:
   global:
+    - PROJECT_DIR: $TRAVIS_BUILD_DIR
     - ROLE_NAME: hetzner_firewall
 
 before_script:
-  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.0/docker-compose.yml
-  - docker-compose up -d
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.1/docker-compose.yml
 
 script:
-  - docker-compose exec cd ansible-role-hetzner-firewall && molecule molecule test --all
+  - docker-compose run molecule molecule test --all
 
 after_script:
   - docker-compose down
