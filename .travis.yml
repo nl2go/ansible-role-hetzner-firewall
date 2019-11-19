@@ -4,11 +4,11 @@ services: docker
 
 env:
   global:
-    - MOLECULE_PROJECT_DIR: $TRAVIS_BUILD_DIR
-    - ROLE_NAME: hetzner_firewall
+    - MOLECULE_PROJECT_DIR: "$TRAVIS_BUILD_DIR"
+    - MOLECULE_ROLE_NAME: "$(basename $TRAVIS_BUILD_DIR)"
 
 before_script:
-  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.2/docker-compose.yml
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.3/docker-compose.yml
   - docker-compose up -d
 
 script:
