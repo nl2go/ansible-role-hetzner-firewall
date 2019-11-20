@@ -29,7 +29,9 @@
       Content-Type: application/x-www-form-urlencoded
     user: "{{ hetzner_firewall_webservice_username }}"
     password: "{{ hetzner_firewall_webservice_password }}"
-    status_code: 202
+    status_code:
+      - 202
+      - 200
     body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
     changed_when: yes
