@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from ansible.module_utils.six.moves.urllib.parse import quote
-#import urllib.parse
+
 
 def form_urlencode(obj, is_root=True, namespace=''):
     encoded_str = ''
@@ -49,7 +49,6 @@ def serialize_value(obj):
         return 'null'
     else:
         return quote(str(obj));
-      #  return urllib.parse.quote(str(obj))
 
 
 class FilterModule(object):
