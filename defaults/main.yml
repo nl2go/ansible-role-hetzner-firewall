@@ -4,3 +4,4 @@ hetzner_firewall_webservice_username: robot
 hetzner_firewall_webservice_password: secret
 hetzner_firewall_host_origin_default: {}
 hetzner_firewall_templates: []
+hetzner_firewall_host: {}

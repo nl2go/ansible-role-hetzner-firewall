@@ -9,17 +9,25 @@ platforms:
   - name: instance
     image: centos:7
     dockerfile: ../resources/playbooks/Dockerfile.j2
+    groups:
+      - foo
 provisioner:
   name: ansible
   inventory:
+    group_vars:
+      foo:
+        hetzner_firewall_host:
+          name: Existing Template
     host_vars:
+      instance:
+        ansible_host: 123.123.123.123
       localhost:
         hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
         hetzner_firewall_webservice_username: robot
         hetzner_firewall_webservice_password: secret
         hetzner_firewall_webservice_mock: nl2go/hetzner-robot-api-mock:1.2.3
         hetzner_firewall_templates:
-          - name: Created Template
+          - name: Existing Template
             whitelist_hos: true
             is_default: false
             rules:
@@ -30,7 +38,7 @@ provisioner:
   lint:
     name: ansible-lint
   playbooks:
-    prepare: ../resources/playbooks/prepare/template.yml
+    prepare: ../resources/playbooks/prepare/firewall.yml
     converge: ../resources/playbooks/playbook.yml
     cleanup: ../resources/playbooks/cleanup.yml
 verifier:

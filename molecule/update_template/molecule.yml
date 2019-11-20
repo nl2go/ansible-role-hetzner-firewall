@@ -25,7 +25,7 @@ provisioner:
   lint:
     name: ansible-lint
   playbooks:
-    prepare: ../resources/playbooks/prepare.yml
+    prepare: ../resources/playbooks/prepare/template.yml
     converge: ../resources/playbooks/playbook.yml
     cleanup: ../resources/playbooks/cleanup.yml
 verifier:
