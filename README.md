@@ -6,8 +6,8 @@ An Ansible Role that manages [Hetzner Robot Firewall](https://wiki.hetzner.de/in
 
 ## Requirements
 
-- Existing [Hetzner Online GmbH Account](https://accounts.hetzner.com)
-- Configured [Hetzner Robot Webservice Account](https://robot.your-server.de/preferences)
+- Existing [Hetzner Online GmbH Account](https://accounts.hetzner.com).
+- Configured [Hetzner Robot Webservice Account](https://robot.your-server.de/preferences).
 
 ## Role Variables
 
@@ -15,7 +15,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
     hetzner_firewall_webservice_base_url: https://robot-ws.your-server.de
  
-Base url that is pointing to the Hetzner Robot Webservice. The variable is mostly utilized for testing purposes, there
+Base url that is pointing to the [Hetzner Robot API](https://robot.your-server.de/doc/webservice/de.html). The variable is mostly utilized for testing purposes, there
 is no need to change the default.
 
     hetzner_firewall_webservice_username: robot
@@ -36,7 +36,34 @@ Webservice password. May be set/changed as described in the section [Change Acce
               ip_version: ipv4
               name: Allow all
     
-Accepts a list of firewall templates to be managed by the role.
+Multiple firewall templates may be managed using `hetzner_firewall_templates` variable. A firewall template is 
+identified by the `name` attribute. The name must be unique to omit collision/unexpected behavior. 
+The `state` attribute for a template defaults to `present`.
+
+    hetzner_firewall_templates:
+      - name: New Template
+        state: absent
+
+To ensure the template is removed add `state: absent`. The `name` attribute remains mandatory to identify origin state.
+
+    hetzner_firewall_host:
+      - name: New Template
+
+Host firewall may be managed by referencing an existing firewall template from the `hetzner_firewall_templates` list.
+The variable `hetzner_firewall_host` may be defined for a particular host group or a dedicated host. Undefined `hetzner_firewall_host`
+leaves the related host or host group firewall being ignored by the role.
+
+    hetzner_firewall_host:
+        absent: true
+
+To remove the firewall configuration for a particular host add `state: absent` to the host firewall configuration.
+Additional configuration parameters do not take effect when `state: absent` is provided.
+
+    hetzner_firewall_host:
+        status: disabled
+
+To disable the firewall for configuration for a particular host add `status: disabled` to the host firewall configuration.
+Additional configuration parameters do not take effect when `state: disabled` is provided.                
 
 ## Dependencies
 
@@ -50,60 +77,7 @@ only, it may be run on localhost.
     - hosts: localhost
       roles:
          - nl2go.hetzner-firewall
-         
-## Configuration
-
-### Firewall Template
-
-Multiple firewall templates may be managed using `hetzner_firewall_templates` variable. A firewall template is 
-identified by the `name` attribute. The name must be unique to omit collision/unexpected behavior. 
-The `state` attribute for a template defaults to `present`.
-
-    hetzner_firewall_templates:
-      - name: New Template
-        whitelist_hos: true
-        is_default: false
-        rules:
-          input:
-            - action: accept
-              ip_version: ipv4
-              name: Allow all
-                  
-To ensure the template is removed add `state: absent`. The `name` attribute remains mandatory to identify origin state.
-
-    hetzner_firewall_templates:
-      - name: New Template
-        state: absent
-
-### Firewall
-
-Host firewall may be managed by referencing an existing firewall template from the `hetzner_firewall_templates` list.
-
-    hetzner_firewall_host:
-      - name: New Template
-
-Firewall configuration may be specified directly for a group of hosts or a single host without utilizing templates.
-
-    hetzner_firewall_host:
-        whitelist_hos: true
-        rules:
-          input:
-            - action: accept
-              ip_version: ipv4
-              name: Allow all
-              
-To remove the firewall configuration for a particular host add `state: absent` to the host firewall configuration.
-Additional configuration parameters do not take effect when `state: absent` is provided.
-
-    hetzner_firewall_host:
-        absent: true
-
-To disable the firewall for configuration for a particular host add `status: disabled` to the host firewall configuration.
-Additional configuration parameters do not take effect when `state: disabled` is provided.
-
-    hetzner_firewall_host:
-        status: disabled
-
+        
 ## License
 
 See the [LICENSE.md](LICENSE.md) file for details.
