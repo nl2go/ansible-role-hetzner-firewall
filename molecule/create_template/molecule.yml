@@ -17,7 +17,7 @@ provisioner:
         hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
         hetzner_firewall_webservice_username: robot
         hetzner_firewall_webservice_password: secret
-        hetzner_firewall_webservice_mock: nl2go/hetzner-robot-api-mock:1.2.2
+        hetzner_firewall_webservice_mock: nl2go/hetzner-robot-api-mock:1.2.3
         hetzner_firewall_templates:
           - name: Created Template
             whitelist_hos: true

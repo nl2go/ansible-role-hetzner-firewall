@@ -15,7 +15,7 @@ class DefaultTest(unittest.TestCase):
         response = requests.get(self.hetzner_robot_base_url +
                                 "/firewall/template", auth=self.auth)
         self.assertEqual(len(response.json()), 1)
-        self.assertEqual(response.json()[0], {
+        self.assertDictEqual(response.json()[0], {
             'firewall_template': {
                 'id': 1,
                 'name': 'Existing Template',
