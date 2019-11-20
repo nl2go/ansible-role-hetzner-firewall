@@ -43,7 +43,6 @@ The `state` attribute for a template defaults to `present`.
 
     hetzner_firewall_templates:## Maintainers
 
-- [build-failure](https://github.com/build-failure)
       - name: New Template
         state: absent
 
