@@ -41,7 +41,9 @@ Multiple firewall templates may be managed using `hetzner_firewall_templates` va
 identified by the `name` attribute. The name must be unique to omit collision/unexpected behavior. 
 The `state` attribute for a template defaults to `present`.
 
-    hetzner_firewall_templates:
+    hetzner_firewall_templates:## Maintainers
+
+- [build-failure](https://github.com/build-failure)
       - name: New Template
         state: absent
 
@@ -90,6 +92,10 @@ Use following to run tests:
        
 This role relies on [hetzner-robot-api-mock](https://github.com/nl2go/hetzner-robot-api-mock) to simulate interactions with
 the [Hetzner Robot API](https://robot.your-server.de/doc/webservice/de.html).
+
+## Maintainers
+
+- [build-failure](https://github.com/build-failure)
 
 ## License
 
