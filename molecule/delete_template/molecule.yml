@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    image: centos:7
+    dockerfile: ../resources/playbooks/Dockerfile.j2
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      localhost:
+        hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
+        hetzner_firewall_webservice_username: robot
+        hetzner_firewall_webservice_password: secret
+        hetzner_firewall_webservice_mock: nl2go/hetzner-robot-api-mock:1.2.3
+        hetzner_firewall_templates:
+          - name: Existing Template
+            state: absent
+  lint:
+    name: ansible-lint
+  playbooks:
+    prepare: ../resources/playbooks/prepare.yml
+    converge: ../resources/playbooks/playbook.yml
+    cleanup: ../resources/playbooks/cleanup.yml
+verifier:
+  name: testinfra
+  env:
+    HETZNER_ROBOT_BASE_URL: http://hetzner-robot:3000
+  lint:
+    name: flake8
