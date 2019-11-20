@@ -1,4 +1,5 @@
 [![Travis (.org) branch](https://img.shields.io/travis/nl2go/ansible-role-hetzner-firewall/master)](https://travis-ci.org/nl2go/ansible-role-hetzner-firewall)
+[![Ansible Galaxy](https://img.shields.io/badge/role-nl2go.hetzner_firewall-blue.svg)](https://https://galaxy.ansible.com/nl2go/hetzner_firewall/)
 
 # Ansible Role: Hetzner Firewall
 
