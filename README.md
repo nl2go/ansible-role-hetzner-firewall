@@ -77,7 +77,19 @@ only, it may be run on localhost.
     - hosts: localhost
       roles:
          - nl2go.hetzner-firewall
-        
+
+## Development
+Use [docker-molecule](https://github.com/nl2go/docker-molecule) following the instructions to run [Molecule](https://molecule.readthedocs.io/en/stable/)
+or install [Molecule](https://molecule.readthedocs.io/en/stable/) locally (not recommended, version conflicts might appear).
+
+
+Use following to run tests:
+
+    molecule test --all
+       
+This role relies on [hetzner-robot-api-mock](https://github.com/nl2go/hetzner-robot-api-mock) to simulate interactions with
+the [Hetzner Robot API](https://robot.your-server.de/doc/webservice/de.html).
+
 ## License
 
 See the [LICENSE.md](LICENSE.md) file for details.
