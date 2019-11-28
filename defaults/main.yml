@@ -11,3 +11,5 @@ hetzner_firewall_webservice_username: robot
 hetzner_firewall_webservice_password: secret
 hetzner_firewall_templates: []
 hetzner_firewall_host: {}
+hetzner_firewall_webservice_concurrent_requests: 1
+hetzner_firewall_webservice_concurrent_poll: 1

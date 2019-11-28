@@ -4,3 +4,5 @@
   with_items: "{{ groups['all'] }}"
   loop_control:
     loop_var: hostname
+  async: "{{ hetzner_firewall_webservice_concurrent_requests }}"
+  poll: "{{ hetzner_firewall_webservice_concurrent_poll }}"

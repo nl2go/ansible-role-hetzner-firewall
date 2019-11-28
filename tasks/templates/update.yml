@@ -13,6 +13,8 @@
     force_basic_auth: yes
   changed_when: yes
   with_items: "{{ change_set_templates['create'] }}"
+  async: "{{ hetzner_firewall_webservice_concurrent_requests }}"
+  poll: "{{ hetzner_firewall_webservice_concurrent_poll }}"
 
 - name: Update firewall templates
   uri:
@@ -28,6 +30,8 @@
     force_basic_auth: yes
   changed_when: yes
   with_items: "{{ change_set_templates['update'] }}"
+  async: "{{ hetzner_firewall_webservice_concurrent_requests }}"
+  poll: "{{ hetzner_firewall_webservice_concurrent_poll }}"
 
 - name: Delete firewall templates
   uri:
@@ -39,3 +43,5 @@
     force_basic_auth: yes
   changed_when: yes
   with_items: "{{ change_set_templates['delete'] }}"
+  async: "{{ hetzner_firewall_webservice_concurrent_requests }}"
+  poll: "{{ hetzner_firewall_webservice_concurrent_poll }}"

@@ -68,6 +68,14 @@ Additional configuration parameters do not take effect when `state: absent` is p
 To disable the firewall for configuration for a particular host add `status: disabled` to the host firewall configuration.
 Additional configuration parameters do not take effect when `state: disabled` is provided.                
 
+    hetzner_firewall_webservice_concurrent_requests: 1
+    hetzner_firewall_webservice_concurrent_poll: 1
+    
+To speed up the role execution while handling the firewall configuration for a big amount of hosts, the number of parallel requests made to the Hetzner Robot API
+can be controlled by `hetzner_firewall_webservice_concurrent_requests` variable. The poll interval for asynchronous request
+result processing is set using `hetzner_firewall_webservice_concurrent_poll`. Check official documentation on
+[Asynchronous Actions and Polling](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for more explanation. 
+
 ## Dependencies
 
 None.

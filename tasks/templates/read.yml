@@ -26,6 +26,8 @@
     force_basic_auth: yes
   register: get_template_response
   with_items: "{{ origin_template_references }}"
+  async: "{{ hetzner_firewall_webservice_concurrent_requests }}"
+  poll: "{{ hetzner_firewall_webservice_concurrent_poll }}"
 
 - name: Map origin firewall templates with rules
   set_fact:
