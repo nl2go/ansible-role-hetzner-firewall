@@ -88,7 +88,41 @@ only, it may be run on localhost.
     - hosts: localhost
       roles:
          - nl2go.hetzner-firewall
+         
+## Example Configuration
 
+    hetzner_firewall_templates:
+      - name: Real World Template
+        whitelist_hos: true
+        is_default: true
+        rules:
+          input:
+            - name: Allow ICMP
+              action: accept
+              ip_version: ipv4
+              protocol: icmp
+            - name: Allow TCP based downloads
+              action: accept
+              ip_version: ipv4
+              protocol: tcp
+              dst_port: 32768-65535
+              tcp_flags: syn
+            - name: Allow UDP based downloads
+              action: accept
+              ip_version: ipv4
+              protocol: tcp
+              dst_port: 32768-65535
+            - name: Allow SSH Office IP
+              action: accept
+              ip_version: ipv4
+              protocol: tcp
+              src_ip: 1.1.1.1/32
+              dst_port: 22
+            - name: Allow private range 1
+              action: accept
+              ip_version: ipv4
+              src_ip: 10.0.0.0/8
+              
 ## Development
 Use [docker-molecule](https://github.com/nl2go/docker-molecule) following the instructions to run [Molecule](https://molecule.readthedocs.io/en/stable/)
 or install [Molecule](https://molecule.readthedocs.io/en/stable/) locally (not recommended, version conflicts might appear).
