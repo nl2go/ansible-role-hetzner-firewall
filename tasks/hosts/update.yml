@@ -34,8 +34,8 @@
       - 200
     body: "{{ item | hetzner_firewall_form_urlencode }}"
     body_format: raw
-    changed_when: yes
     force_basic_auth: yes
+  changed_when: yes
   with_items: "{{ change_set_firewall['create'] + change_set_firewall['update'] }}"
 
 - name: "Delete host firewall"
@@ -47,6 +47,6 @@
     status_code:
       - 202
       - 200
-    changed_when: yes
     force_basic_auth: yes
+  changed_when: yes
   with_items: "{{ change_set_firewall['delete'] }}"
