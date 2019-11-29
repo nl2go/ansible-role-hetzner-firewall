@@ -42,7 +42,7 @@ Multiple firewall templates may be managed using `hetzner_firewall_templates` va
 identified by the `name` attribute. The name must be unique to omit collision/unexpected behavior. 
 The `state` attribute for a template defaults to `present`.
 
-    hetzner_firewall_templates:## Maintainers
+    hetzner_firewall_templates:
 
       - name: New Template
         state: absent
