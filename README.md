@@ -43,7 +43,6 @@ identified by the `name` attribute. The name must be unique to omit collision/un
 The `state` attribute for a template defaults to `present`.
 
     hetzner_firewall_templates:
-
       - name: New Template
         state: absent
 
