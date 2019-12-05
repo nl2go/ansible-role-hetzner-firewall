@@ -5,7 +5,7 @@ from filter_plugins.omit import *
 
 class OmitTest(unittest.TestCase):
 
-    def test_template_defaults(self):
+    def test_omit(self):
         obj = [{'foo': 'a', 'bar': 'b'}]
         expected_obj = [{'foo': 'a'}]
 
