@@ -8,7 +8,7 @@ env:
     - MOLECULE_ROLE_NAME: "$(basename $TRAVIS_BUILD_DIR)"
 
 before_script:
-  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.3/docker-compose.yml
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.5/docker-compose.yml
   - docker-compose up -d
 
 script:
