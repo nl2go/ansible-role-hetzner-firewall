@@ -50,7 +50,7 @@ The `state` attribute for a template defaults to `present`.
 To ensure the template is removed add `state: absent`. The `name` attribute remains mandatory to identify origin state.
 
     hetzner_firewall_host:
-      - name: New Template
+        name: New Template
 
 Host firewall may be managed by referencing an existing firewall template from the `hetzner_firewall_templates` list.
 The variable `hetzner_firewall_host` may be defined for a particular host group or a dedicated host. Undefined `hetzner_firewall_host`
