@@ -117,7 +117,7 @@ only, it may be run on localhost.
               ip_version: ipv4
               protocol: tcp
               src_ip: 1.1.1.1/32
-              dst_port: 22
+              dst_port: '22'
             - name: Allow private range 1
               action: accept
               ip_version: ipv4
