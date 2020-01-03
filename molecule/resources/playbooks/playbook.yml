@@ -1,7 +1,5 @@
 ---
 - name: Converge
   hosts: localhost
-  vars:
-    hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
   roles:
     - role: ansible-role-hetzner-firewall
