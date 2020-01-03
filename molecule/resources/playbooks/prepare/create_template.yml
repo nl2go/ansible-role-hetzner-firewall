@@ -1,0 +1,19 @@
+---
+- name: Create firewall template
+  uri:
+    url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template"
+    method: POST
+    user: "{{ hetzner_firewall_webservice_username }}"
+    password: "{{ hetzner_firewall_webservice_password }}"
+    status_code: 201
+    body:
+      name: Existing Template
+      whitelist_hos: true
+      is_default: false
+      rules:
+        input:
+          - action: accept
+            ip_version: ipv4
+            name: Allow all
+    force_basic_auth: yes
+    body_format: json

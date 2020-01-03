@@ -1,24 +1,8 @@
 ---
-- name: Prepare Hetzner Robot Mock API
+- name: Prepare Hetzner Robot Mock API for *_template scenario
   hosts: localhost
   tasks:
-    - name: Run Hetzner Robot Mock API Container
-      shell: docker run -d --rm --network molecule --name hetzner-robot {{ hetzner_firewall_webservice_mock }}
-    - name: Create firewall template
-      uri:
-        url: "{{ hetzner_firewall_webservice_base_url }}/firewall/template"
-        method: POST
-        user: "{{ hetzner_firewall_webservice_username }}"
-        password: "{{ hetzner_firewall_webservice_password }}"
-        status_code: 201
-        body:
-          name: Existing Template
-          whitelist_hos: true
-          is_default: false
-          rules:
-            input:
-              - action: accept
-                ip_version: ipv4
-                name: Allow all
-        force_basic_auth: yes
-        body_format: json
+    - name: Include start Hetzner Robot Mock API
+      include: ./start_hetzner_robot_mock_api.yml
+    - name: Include create template
+      include: ./create_template.yml

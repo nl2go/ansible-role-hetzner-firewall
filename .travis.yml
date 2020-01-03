@@ -8,10 +8,9 @@ env:
     - MOLECULE_ROLE_NAME: "$(basename $TRAVIS_BUILD_DIR)"
 
 before_script:
-  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/1.0.5/docker-compose.yml
+  - wget https://raw.githubusercontent.com/nl2go/docker-molecule/2.22-n2g-1.0.0/docker-compose.yml
   - docker-compose up -d
-  - pip install ansible
-  - pip install coverage
+  - pip install ansible coverage codecov
 
 script:
   - docker-compose exec molecule molecule test --all
@@ -19,7 +18,7 @@ script:
 
 after_script:
   - docker-compose down
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
