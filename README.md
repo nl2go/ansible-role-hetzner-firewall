@@ -95,7 +95,7 @@ only, it may be run on localhost.
 
     - hosts: localhost
       roles:
-         - nl2go.hetzner-firewall
+         - nl2go.hetzner_firewall
          
 ## Example Configuration
 
