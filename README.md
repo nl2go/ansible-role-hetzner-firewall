@@ -76,6 +76,13 @@ can be controlled by `hetzner_firewall_webservice_concurrent_requests` variable.
 result processing is set using `hetzner_firewall_webservice_concurrent_poll`. Check official documentation on
 [Asynchronous Actions and Polling](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for more explanation. 
 
+## Tags
+
+Tags can be used to limit the role execution to a particular task module. Following tags are available:
+
+- `hetzner_firewall-template`: Manages firewall templates.
+- `hetzner_firewall-host`: Manages hosts firewall.
+
 ## Dependencies
 
 None.
