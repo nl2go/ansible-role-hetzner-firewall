@@ -6,3 +6,9 @@
       include: ./start_hetzner_robot_mock_api.yml
     - name: Include create template
       include: ./create_template.yml
+
+- name: Prepare controller
+  hosts: localhost
+  tasks:
+    - name: Prepare controller
+      include: controller.yml

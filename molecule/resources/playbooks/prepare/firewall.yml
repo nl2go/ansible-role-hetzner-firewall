@@ -8,3 +8,9 @@
       include: ./create_template.yml
     - name: Include create firewall
       include: ./create_firewall.yml
+
+- name: Prepare controller
+  hosts: localhost
+  tasks:
+    - name: Prepare controller
+      include: controller.yml

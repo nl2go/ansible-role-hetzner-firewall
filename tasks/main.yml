@@ -1,7 +1,6 @@
 ---
 - include_tasks: templates/main.yml
-  tags:
-    - hetzner_firewall-template
+  tags: ["hetzner_firewall", "hetzner_firewall_template", "config"]
+
 - include_tasks: hosts/main.yml
-  tags:
-    - hetzner_firewall-host
+  tags: ["hetzner_firewall", "hetzner_firewall_host", "config"]

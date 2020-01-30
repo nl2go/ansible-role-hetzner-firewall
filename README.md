@@ -8,10 +8,16 @@
 
 An Ansible Role that manages [Hetzner Robot Firewall](https://wiki.hetzner.de/index.php/Robot_Firewall/en).
 
-## Requirements
+## Prerequisites
 
 - Existing [Hetzner Online GmbH Account](https://accounts.hetzner.com).
 - Configured [Hetzner Robot Webservice Account](https://robot.your-server.de/preferences).
+
+## Requirements
+
+| Name | Type | Version | Location |
+|---|---|---|---|
+| [ansible-filter](https://github.com/nl2go/ansible-filter) | Python package | 1.0.0 | Control node |
 
 ## Role Variables
 
@@ -81,8 +87,9 @@ result processing is set using `hetzner_firewall_webservice_concurrent_poll`. Ch
 
 Tags can be used to limit the role execution to a particular task module. Following tags are available:
 
-- `hetzner_firewall-template`: Manages firewall templates.
-- `hetzner_firewall-host`: Manages hosts firewall.
+- `hetzner_firewall`,`config`: Covers the full role lifecycle.
+- `hetzner_firewall_template`: Manages firewall templates.
+- `hetzner_firewall_host`: Manages hosts firewall.
 
 ## Dependencies
 
