@@ -1,4 +1,4 @@
 ---
 - name: Install ansible-filter package
   pip:
-    name: ansible-filter==1.0.0
+    name: ansible-filter==1.0.1
