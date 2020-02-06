@@ -10,8 +10,8 @@ platforms:
 provisioner:
   name: ansible
   inventory:
-    host_vars:
-      localhost:
+    group_vars:
+      all:
         hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
         hetzner_firewall_webservice_username: robot
         hetzner_firewall_webservice_password: secret

@@ -1,6 +1,10 @@
 ---
-- include_tasks: templates/main.yml
+- import_tasks: templates/main.yml
   tags: ["hetzner_firewall", "hetzner_firewall_template", "config"]
+  delegate_to: localhost
+  run_once: yes
 
-- include_tasks: hosts/main.yml
+- import_tasks: hosts/main.yml
   tags: ["hetzner_firewall", "hetzner_firewall_host", "config"]
+  delegate_to: localhost
+  run_once: yes

@@ -16,10 +16,7 @@ provisioner:
       foo:
         hetzner_firewall_host:
           name: Existing Template
-    host_vars:
-      instance:
-        ansible_host: 123.123.123.123
-      localhost:
+      all:
         hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
         hetzner_firewall_webservice_username: robot
         hetzner_firewall_webservice_password: secret
@@ -33,6 +30,9 @@ provisioner:
                 - action: accept
                   ip_version: ipv4
                   name: Allow all
+    host_vars:
+      instance:
+        ansible_host: 123.123.123.123
   lint:
     name: ansible-lint
   playbooks:

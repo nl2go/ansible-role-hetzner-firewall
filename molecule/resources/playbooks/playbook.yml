@@ -1,5 +1,6 @@
 ---
 - name: Converge
-  hosts: localhost
+  gather_facts: no
+  hosts: all
   roles:
     - role: ansible-role-hetzner-firewall

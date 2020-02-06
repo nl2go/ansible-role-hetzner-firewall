@@ -97,10 +97,7 @@ None.
 
 ## Example Playbook
 
-Since the role is managing the communication with the [Hetzner Robot API](https://robot.your-server.de/doc/webservice/de.html)
-only, it may be run on localhost.
-
-    - hosts: localhost
+    - hosts: all
       roles:
          - nl2go.hetzner_firewall
          

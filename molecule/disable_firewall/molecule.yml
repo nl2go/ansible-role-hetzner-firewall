@@ -16,15 +16,16 @@ provisioner:
       foo:
         hetzner_firewall_host:
           status: disabled
-    host_vars:
-      instance:
-        ansible_host: 123.123.123.123
-      localhost:
+      all:
         hetzner_firewall_webservice_base_url: http://hetzner-robot:3000
         hetzner_firewall_webservice_username: robot
         hetzner_firewall_webservice_password: secret
         hetzner_firewall_webservice_mock: nl2go/hetzner-robot-api-mock:1.2.3
         hetzner_firewall_templates: []
+    host_vars:
+      instance:
+        ansible_host: 123.123.123.123
+
   lint:
     name: ansible-lint
   playbooks:
