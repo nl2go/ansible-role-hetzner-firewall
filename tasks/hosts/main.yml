@@ -1,6 +1,6 @@
 ---
 - name: "Check firewall configuration for all hosts"
   include_tasks: host.yml
-  with_items: "{{ groups['all'] }}"
+  with_items: "{{ ansible_play_hosts }}"
   loop_control:
     loop_var: hostname
