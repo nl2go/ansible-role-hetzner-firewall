@@ -2,5 +2,6 @@
 - name: "Check firewall configuration for all hosts"
   include_tasks: host.yml
   with_items: "{{ ansible_play_hosts }}"
+  when: hostvars[hostname].hetzner_firewall_host is defined
   loop_control:
     loop_var: hostname
