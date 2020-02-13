@@ -10,7 +10,7 @@ env:
 before_script:
   - wget https://raw.githubusercontent.com/nl2go/docker-molecule/2.22-n2g-1.0.0/docker-compose.yml
   - docker-compose up -d
-  - pip install ansible coverage codecov
+  - pip install ansible coverage codecov ansible-filter==1.0.1
 
 script:
   - docker-compose exec molecule molecule test --all
